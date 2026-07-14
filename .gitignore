@@ -1,0 +1,4 @@
+exp_*/
+__pycache__/
+*.pyc
+.netrc

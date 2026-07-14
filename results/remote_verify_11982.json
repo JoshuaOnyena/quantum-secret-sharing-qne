@@ -1,0 +1,18 @@
+{
+  "_note": "Remote QNE backend run, verify scenario (mode 0). Roles mapped onto paris (alice) / inssbruck (bob) / barcelona (charlie). Trimmed to the round_result and the key classical-message phase; the full entanglement trace is omitted for brevity.",
+  "id": 11982,
+  "round_set": "https://api.quantum-network.com/round-sets/11745/",
+  "created_at": "2026-07-14T02:21:54Z",
+  "round_result": {
+    "app_alice":   { "mode": "verify", "num_rounds": 20, "compatible_rounds": 12, "correct": 12, "correlation_ok": true, "party": "alice" },
+    "app_bob":     { "party": "bob", "rounds": 20 },
+    "app_charlie": { "party": "charlie", "rounds": 20, "mode": 0 }
+  },
+  "announced_bases": {
+    "alice":   "X,X,Y,X,Y,Y,Y,Y,X,X,Y,X,Y,Y,X,Y,Y,X,X,Y",
+    "bob":     "X,X,X,Y,X,Y,Y,X,X,X,Y,Y,Y,Y,Y,X,X,Y,Y,Y",
+    "charlie": "X,X,Y,Y,X,X,Y,Y,X,X,Y,Y,Y,X,X,X,Y,X,X,X"
+  },
+  "final_message": "VERIFY: 12/12 compatible rounds correlated",
+  "interpretation": "On all 12 rounds where the three bases formed a compatible (even-Y) combination, the GHZ relation a XOR b XOR c = parity held exactly. Genuine three-party GHZ correlation reproduced on the live QNE backend."
+}

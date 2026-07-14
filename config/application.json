@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Number of rounds",
+    "description": "How many GHZ rounds to run.",
+    "values": [
+      {"name": "num_rounds", "default_value": 20, "minimum_value": 4, "maximum_value": 200, "unit": "", "scale_value": 1.0}
+    ],
+    "input_type": "number",
+    "roles": ["alice", "bob", "charlie"]
+  },
+  {
+    "title": "Scenario mode",
+    "description": "0=verify correlation, 1=reconstruct secret (Bob+Charlie), 2=solo (Bob alone learns nothing).",
+    "values": [
+      {"name": "mode", "default_value": 0, "minimum_value": 0, "maximum_value": 2, "unit": "", "scale_value": 1.0}
+    ],
+    "input_type": "number",
+    "roles": ["alice", "charlie"]
+  }
+]
