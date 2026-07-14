@@ -12,17 +12,17 @@ The scheme rests on a genuine three-party GHZ state,
 |GHZ> = (|000> + |111>) / sqrt(2)
 ```
 
-shared one qubit each by Alice, Bob, and Charlie. Each party measures its qubit in a randomly chosen X or Y basis. After measurement, the bases are announced publicly (the outcomes are not). On the rounds where the basis combination is *compatible* — an even number of Y measurements: XXX, XYY, YXY, YYX — the three outcomes obey a deterministic relation:
+shared one qubit each by Alice, Bob, and Charlie. Each party measures its qubit in a randomly chosen X or Y basis. After measurement, the bases are announced publicly (the outcomes are not). On the rounds where the basis combination is *compatible* an even number of Y measurements: XXX, XYY, YXY, YYX the three outcomes obey a deterministic relation:
 
 ```
 a  XOR  b  XOR  c  =  parity(combination)
 ```
 
-so Alice's bit `a` equals `b XOR c XOR parity`. Bob and Charlie must therefore **combine** their bits to recover Alice's share; either bit alone is uniformly random and carries no information about `a`. That asymmetry — jointly recoverable, individually useless — is the whole point.
+so Alice's bit `a` equals `b XOR c XOR parity`. Bob and Charlie must therefore **combine** their bits to recover Alice's share; either bit alone is uniformly random and carries no information about `a`. That asymmetry jointly recoverable, individually useless is the whole point.
 
 ## 2. The part that makes it real: a genuine GHZ state
 
-The security property only holds if the three parties share a true GHZ state. A common implementation mistake is to distribute two independent Bell pairs (Alice–Bob and Alice–Charlie) and call it a GHZ state — but two Bell pairs are **not** GHZ, and Bob and Charlie end up uncorrelated with each other, so no shared secret exists.
+The security property only holds if the three parties share a true GHZ state. A common implementation mistake is to distribute two independent Bell pairs (Alice–Bob and Alice–Charlie) and call it a GHZ state —l but two Bell pairs are **not** GHZ, and Bob and Charlie end up uncorrelated with each other, so no shared secret exists.
 
 This application builds a real GHZ state by **fan-out**: Alice prepares a data qubit in |+>, then entangles it into an EPR pair with each participant using a CNOT, measures the mediating qubit, and sends a classical correction. The result is one genuine three-party GHZ state per round, never exceeding two qubits held at any node.
 
@@ -47,13 +47,13 @@ Well within the QNE 3-qubit-per-node ceiling. On the `europe` network the roles 
 
 ## 4. Scenarios (selectable by the `mode` input)
 
-The application exposes two inputs — `num_rounds` and `mode` — so all three scenarios run from one published app without code changes:
+The application exposes two inputs`num_rounds` and `mode` so all three scenarios run from one published app without code changes:
 
 | `mode` | Scenario | Demonstrates |
 |:------:|----------|--------------|
 | 0 | **verify** | the GHZ correlation is genuine (a == b XOR c XOR parity on every compatible round) |
 | 1 | **reconstruct** | Bob and Charlie together recover the dealer's secret bits |
-| 2 | **solo** | Bob alone is uncorrelated with the secret (match rate ~ 0.5) — the threshold-security property |
+| 2 | **solo** | Bob alone is uncorrelated with the secret (match rate ~ 0.5) the threshold-security property |
 
 ## 5. Results
 
@@ -68,7 +68,7 @@ On the compatible-basis rounds, the deterministic relation held on **every** rou
 | Local | 12 | 12 | **true** |
 | Remote (result 11982) | 12 | 12 | **true** |
 
-The remote run executed on paris / inssbruck / barcelona and reproduced the local result exactly — genuine three-way GHZ correlation on the live backend.
+The remote run executed on paris / inssbruck / barcelona and reproduced the local result exactly genuine three-way GHZ correlation on the live backend.
 
 ### 5.2 Reconstruct — Bob + Charlie recover the secret
 
@@ -80,14 +80,14 @@ Bob and Charlie, combining their measurements, recovered every bit of Alice's se
 
 ### 5.3 Solo — a single party learns nothing
 
-The security property: one participant's data alone should be uncorrelated with the secret — a match rate at chance (0.5). The verdict is **sample-aware**, because at small sample sizes a match rate cannot be distinguished from chance.
+The security property: one participant's data alone should be uncorrelated with the secret a match rate at chance (0.5). The verdict is **sample-aware**, because at small sample sizes a match rate cannot be distinguished from chance.
 
 | rounds | compatible rounds | Bob-alone match rate | verdict |
 |:------:|:-----------------:|:--------------------:|---------|
 | 20 | 12 | (small sample) | **insufficient_sample** |
 | 200 | 100 | **0.53** | **protected** (within the chance band) |
 
-At 100 compatible rounds the match rate settled at 0.53, comfortably inside the chance band (0.5 ± 3·standard error) — Bob alone learns essentially nothing. At 20 rounds the app correctly reports `insufficient_sample` rather than a spurious verdict, because 12 rounds cannot statistically distinguish protection from noise.
+At 100 compatible rounds the match rate settled at 0.53, comfortably inside the chance band (0.5 ± 3·standard error) Bob alone learns essentially nothing. At 20 rounds the app correctly reports `insufficient_sample` rather than a spurious verdict, because 12 rounds cannot statistically distinguish protection from noise.
 
 ### 5.4 The three scenarios together
 
@@ -97,13 +97,13 @@ At 100 compatible rounds the match rate settled at 0.53, comfortably inside the 
 | reconstruct | 12/12 recovered | Bob + Charlie together recover the secret |
 | solo | 0.53 at n=100, protected | one party alone learns nothing (threshold security) |
 
-Genuine entanglement (verify), correct functionality (reconstruct), and the actual security guarantee (solo) — each shown from real runs.
+Genuine entanglement (verify), correct functionality (reconstruct), and the actual security guarantee (solo) each shown from real runs.
 
 ## 6. Implications for quantum security
 
-Classical secret-sharing schemes protect the shares with computational assumptions or trusted infrastructure. This scheme's protection is **information-theoretic**: a lone participant's bit is uniformly random with respect to the secret as a matter of the physics of the GHZ state, not as a matter of a hard computational problem. An adversary with unbounded computing power — including a quantum computer — gains nothing against a single share.
+Classical secret-sharing schemes protect the shares with computational assumptions or trusted infrastructure. This scheme's protection is **information-theoretic**: a lone participant's bit is uniformly random with respect to the secret as a matter of the physics of the GHZ state, not as a matter of a hard computational problem. An adversary with unbounded computing power including a quantum computer gains nothing against a single share.
 
-The framing that makes this industry-legible: this is the primitive underneath **privacy-preserving multiparty aggregation** (several parties compute a joint result without exposing individual inputs) and **distributed key custody** (no single party holds a complete master key; a threshold must cooperate to reconstruct it). The demonstrated guarantee is narrow and exact rather than universal — it protects a single share, consumes entanglement per round, and assumes honest execution — which is precisely the kind of scoped, verifiable property worth building on.
+The framing that makes this industry-legible: this is the primitive underneath **privacy-preserving multiparty aggregation** (several parties compute a joint result without exposing individual inputs) and **distributed key custody** (no single party holds a complete master key; a threshold must cooperate to reconstruct it). The demonstrated guarantee is narrow and exact rather than universal it protects a single share, consumes entanglement per round, and assumes honest execution which is precisely the kind of scoped, verifiable property worth building on.
 
 ## 7. Scope and limitations
 
@@ -130,7 +130,7 @@ qne experiment results exp_verify
 # in the experiment.json before running; use more rounds for solo (>= 100).
 ```
 
-The Y-basis measurement uses `rot_Z(n=3, d=1)` (a 3*pi/2 rotation, equal to S-dagger up to global phase) — netqasm 2.0 rejects negative rotation multiples, so `n=3` rather than `n=-1`. If the compatible-round correlation does not come out deterministic, that rotation is the first thing to check.
+The Y-basis measurement uses `rot_Z(n=3, d=1)` (a 3*pi/2 rotation, equal to S-dagger up to global phase) netqasm 2.0 rejects negative rotation multiples, so `n=3` rather than `n=-1`. If the compatible-round correlation does not come out deterministic, that rotation is the first thing to check.
 
 ## References
 
